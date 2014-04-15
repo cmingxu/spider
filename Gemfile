@@ -1,4 +1,8 @@
 # A sample Gemfile
 source "https://rubygems.org"
 
-# gem "rails"
+gem "activerecord"
+gem "activesupport"
+gem "nokogiri"
+gem "httparty"
+gem "mysql2"
