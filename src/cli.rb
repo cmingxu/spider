@@ -1,4 +1,7 @@
+# -*- encoding : utf-8 -*-
 require "optparse"
+require "worker"
+
 module Spider
   module CLI
     class Options
@@ -6,10 +9,20 @@ module Spider
         attr_accessor :options
 
         def parse(argv)
+          OptionParser.new do |opts|
+            opts.on( "-t", "--timeout T", Integer,
+                    "How long it will take to timeout a request.") do |opt|
+              @options[:timeout] = opt
+            end
 
+            opts.on( "-c", "--concurrent C", Integer,
+                    "How many concurrent processes.") do |opt|
+              @options[:concurrent] = opt
+            end
+          end.parse! argv
         end
       end
-      @options = {
+      self.options = {
         # timeout when retriving a web page, 5 sec default
         :timeout => 5,
         # how many process run in parallel
@@ -21,18 +34,8 @@ module Spider
     end
 
     def run!
-      puts ARGV
-      options = Options.parse ARGV
-      
-    end
-
-    def usage
-      $stdout.puts " Spider - a tool to spider office & office rent info around China"
-      $spider.puts "./spider [OPTIONS]"
-      $spider.puts ""
-      $spider.puts " --timeout=10        how long it will take to kill itself before a request fail to get response"
-      $spider.puts " --concurrent=10     how many processes run in parallel to fetch data"
-      $spider.puts " --office-data-only  retrive only office data"
+      Options.parse ARGV
+      Worker.new(Options.options).run
     end
 
     module_function :run!
