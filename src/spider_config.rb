@@ -20,6 +20,13 @@ module SpiderConfig
       Logger.new(self.pro? ? File.open(SpiderRoot.to_s + "/tmp/debug.log", "w") : STDOUT)
     end
 
+    def pid
+    end
+
+    def html_file_path
+      Pathname.new(SpiderRoot.to_s + "/tmp/htmls")
+    end
+
     def sites
       [
         Site.new("fangxun", "http://www.funxun.com/", "房讯网"),

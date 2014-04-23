@@ -13,6 +13,9 @@ class Worker
   end
 
   def run
-    ap Crawler.get "http://www.funxun.com/fczy/office/107691_2.html"
+    res =  Crawler.new.get "http://www.funxun.com/fczy/office/107691_2.html"
+    File.open SpiderConfig.html_file_path.to_s + "/a.html", "w+" do |f|
+      f << res.body
+    end
   end
 end
