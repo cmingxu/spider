@@ -14,8 +14,8 @@ module FangXun
         puts area.content.encode("utf-8")
         puts area["href"]
       end
-      biggest_page = doc.css("html body #jumpform font")
-      puts biggest_page.content
+      #biggest_page = doc.css("html body #jumpform font")
+      #puts biggest_page.content
 
     end
   end
