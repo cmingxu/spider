@@ -21,6 +21,7 @@ CREATE TABLE circles(
 CREATE TABLE offices(
   id int(11) NOT NULL AUTO_INCREMENT,
   name varchar(400),
+  link varchar(400),
   source_site varchar(100),
   area_id int(11),
   circle_id int(11),
