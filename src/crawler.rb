@@ -8,11 +8,17 @@ class Crawler
   @@headers = {
     "Content-Type" => "text/html",
     "Referer" => "https://www.google.com/",
-    "User-Agent" => "User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.116 Safari/537.36"
+    "User-Agent" => "Sogou web spider/4.0"
   }
 
   def get(url, options = {})
     headers = @@headers.merge(options[:headers] || {})
-    self.class.get(url, :headers => headers)
+    begin
+      self.class.get(url, :headers => headers)
+    rescue Errno::ETIMEDOUT => e
+      puts e
+      sleep 60
+      retry
+    end
   end
 end

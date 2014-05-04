@@ -8,7 +8,8 @@ module SpiderConfig
         :port => 3306,
         :username => "root",
         :password => "",
-        :database => "crawler"
+        :database => "crawler",
+        :encoding => "utf8"
       }
     end
 

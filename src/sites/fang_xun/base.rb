@@ -11,8 +11,9 @@ module FangXun
         SpiderConfig.log.debug a.text
         office_by_area(a["href"])
       end
-
     end
+
+    private
 
     def office_by_area(link)
       SpiderConfig.log.debug link
@@ -32,10 +33,28 @@ module FangXun
 
       doc = Nokogiri::HTML(html, nil, "gbk")
       doc.css("li.aa div.info_1 a").each do |office|
-          SpiderConfig.log.debug office.text
-          SpiderConfig.log.debug office["href"]
+        SpiderConfig.log.debug office.text
+        SpiderConfig.log.debug office["href"]
+        office_info_scrap(office)
       end
+    end
 
+    def office_info_scrap(office)
+      link = "http://www.funxun.com/fczy/" + office["href"]
+      html = Crawler.new.get link
+      doc = Nokogiri::HTML(html, nil, "gbk")
+      Office.new do |o|
+        o.name = "徐春明"
+
+      end.save
+      Office.new do |o|
+        o.name = office.text
+        o.link = link
+        o.source_site = "fangxun"
+        o.tel = doc.css("p.tel span.tel4 strong").text
+        o.address = doc.css("div.fou div div.baseinfo p")[1].try(:text)
+        o.kaifashang = doc.css("div.fou div div.newsinfo2013 ul li.newsinfo2013cont")[0].try(:text)
+      end.save
     end
   end
 end

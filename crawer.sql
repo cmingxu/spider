@@ -7,7 +7,7 @@ CREATE TABLE areas(
   created_at datetime,
   updated_at datetime,
   PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE circles(
   id int(11) NOT NULL AUTO_INCREMENT,
@@ -16,7 +16,7 @@ CREATE TABLE circles(
   created_at datetime,
   updated_at datetime,
   PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE offices(
   id int(11) NOT NULL AUTO_INCREMENT,
@@ -41,7 +41,7 @@ CREATE TABLE offices(
   created_at datetime,
   updated_at datetime,
   PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE rents(
   id int(11) NOT NULL AUTO_INCREMENT,
@@ -53,4 +53,4 @@ CREATE TABLE rents(
   created_at datetime,
   updated_at datetime,
   PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

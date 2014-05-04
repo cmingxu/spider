@@ -12,6 +12,7 @@ class Worker
   def initialize(opt)
     ActiveRecord::Base.logger = SpiderConfig.log
     ActiveRecord::Base.establish_connection(SpiderConfig.db_spec)
+    ActiveRecord::Base.connection.execute "SET NAMES utf8;"
   end
 
   def run
