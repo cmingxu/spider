@@ -16,6 +16,8 @@ class Office < ActiveRecord::Base
   belongs_to :circle
   belongs_to :area
   has_many :rents
+
+  serialize :detail
 end
 
 class Rent < ActiveRecord::Base
