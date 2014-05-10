@@ -7,6 +7,7 @@ require "spider_config"
 require "crawler"
 require "awesome_print"
 require "sites/fang_xun/base"
+require "sites/soufang/base"
 require "sites/fang_xun/price"
 
 class Worker
@@ -18,6 +19,9 @@ class Worker
 
   def run
     #FangXun::Base.new.craw
-    FangXun::Price.new.craw
+    #FangXun::Price.new.craw
+    #
+    
+    Soufang::Base.new.craw
   end
 end
