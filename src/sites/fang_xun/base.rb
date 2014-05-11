@@ -46,7 +46,7 @@ module FangXun
       html = Crawler.new.get link
       doc = Nokogiri::HTML(html, nil, "gbk")
 
-      o = Office.find_by_name(office_node.text) || Office.new
+      o = Office.find_by_name_and_source_site(office_node.text, "fangxun") || Office.new
       o.name = office_node.text
       o.link = link
       o.source_site = "fangxun"

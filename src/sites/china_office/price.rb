@@ -1,5 +1,5 @@
 # -*- encoding : utf-8 -*-
-module FangXun
+module ChinaOffice
   class Price
 
   end

@@ -52,6 +52,7 @@ CREATE TABLE rents(
   office_id int(11),
   office_name varchar(400),
   price varchar(400),
+  buy_price varchar(400),
   page_name varchar(100),
   page_hash varchar(255),
   created_at datetime,

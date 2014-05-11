@@ -13,6 +13,10 @@ module SpiderConfig
       }
     end
 
+    def sep
+      "：" 
+    end
+
     def pro?
       (ENV["CRAWLER_ENV"] || "").downcase == "pro"
     end
