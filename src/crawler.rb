@@ -19,6 +19,10 @@ class Crawler
       puts e
       sleep 60
       retry
+    rescue Errno::ECONNREFUSED => e
+      puts e
+      sleep 60
+      retry
     end
   end
 end

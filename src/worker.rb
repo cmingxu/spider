@@ -8,8 +8,12 @@ require "crawler"
 require "awesome_print"
 require "sites/fang_xun/base"
 require "sites/fang_xun/price"
+
 require "sites/soufun/base"
 require "sites/soufun/price"
+
+require "sites/china_office/base"
+require "sites/china_office/price"
 
 class Worker
   def initialize(opt)
@@ -23,6 +27,8 @@ class Worker
     #FangXun::Price.new.craw
     
     #Soufun::Base.new.craw
-    Soufun::Price.new.craw
+    #Soufun::Price.new.craw
+    
+    ChinaOffice::Base.new.craw
   end
 end

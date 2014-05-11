@@ -2,21 +2,49 @@
 require "crawler"
 require "nokogiri"
 
-module FangXun
+module ChinaOffice
   class Base
     def craw
-      text = Crawler.new.get "http://www.funxun.com/fczy/chaoyang.asp"
+      text = Crawler.new.get "http://beijing.chineseoffice.com.cn/RentOffice/index.aspx"
 
       doc = Nokogiri::HTML(text)
-      areas = doc.css("html body div.fun div.me a")
+      biggest_page = Integer(doc.css("form#form1 div.main div#pager_pagerDiv span.count").text.scan(/\d+/).first)
 
-      areas.each do |area|
-        puts area.content.encode("utf-8")
-        puts area["href"]
+      (1..biggest_page).each do |page|
+       office_by_page( "http://beijing.chineseoffice.com.cn/RentOffice/index.aspx?page=#{page}")
       end
-      biggest_page = doc.css("html body #jumpform font")
-      puts biggest_page.content
+    end
 
+    def office_by_page(link)
+      SpiderConfig.log.debug link
+      text = Crawler.new.get link
+      doc = Nokogiri::HTML(text)
+      doc.css("form#form1 div.main div.leftcon div#officelist li.l0 input").each do |office|
+        office_node = OpenStruct.new
+        office_node.name = office['onclick'].split(" ")[1].strip[1..-3]
+        office_node.href = office['onclick'].split(" ")[2].strip[1..-3]
+        office_info_scrap(office_node)
+      end
+    end
+
+    def office_info_scrap(office_node)
+      SpiderConfig.log.debug office_node.href
+      text = Crawler.new.get office_node.href
+      doc = Nokogiri::HTML(text, nil, "gbk")
+
+      o = Office.find_by_name_and_source_site(office_node.name, "chinaoffice") || Office.new
+      o.name = office_node.name
+      o.link = office_node.href
+      o.source_site = "chinaoffice"
+      detail_info = doc.css("div.main div.detail_info ul li")
+      o.area_name = detail_info[1].text.split(SpiderConfig.sep).last
+      o.wuye_name = detail_info[6].text.split(SpiderConfig.sep).last
+      o.kaifashang = detail_info[7].text.split(SpiderConfig.sep).last
+      o.address = detail_info[8].text.split(SpiderConfig.sep).last.split("(").first
+      o.wuyefei = detail_info[5].css("div").text.split(SpiderConfig.sep).last
+      o.mianji = detail_info[4].css("div").text.split(SpiderConfig.sep).last
+
+      o.save
     end
   end
 end
