@@ -29,6 +29,7 @@ class Worker
     #Soufun::Base.new.craw
     #Soufun::Price.new.craw
     
-    ChinaOffice::Base.new.craw
+    #ChinaOffice::Base.new.craw
+    ChinaOffice::Price.new.craw
   end
 end

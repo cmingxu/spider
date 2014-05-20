@@ -22,8 +22,10 @@ module ChinaOffice
       doc.css("form#form1 div.main div.leftcon div#officelist li.l0 input").each do |office|
         office_node = OpenStruct.new
         office_node.name = office['onclick'].split(" ")[1].strip[1..-3]
-        office_node.href = office['onclick'].split(" ")[2].strip[1..-3]
-        office_info_scrap(office_node)
+        if s = office['onclick'].split(" ")[2]
+          office_node.href = s.strip[1..-3]
+          office_info_scrap(office_node)
+        end
       end
     end
 
@@ -43,6 +45,9 @@ module ChinaOffice
       o.address = detail_info[8].text.split(SpiderConfig.sep).last.split("(").first
       o.wuyefei = detail_info[5].css("div").text.split(SpiderConfig.sep).last
       o.mianji = detail_info[4].css("div").text.split(SpiderConfig.sep).last
+
+      detail_info2 = doc.css("div.main div.detail_info ul")[1]
+      o.contact = detail_info2.css('li.tel strong').text
 
       o.save
     end
