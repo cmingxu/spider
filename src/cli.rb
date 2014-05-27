@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 require "optparse"
 require "worker"
+require "web"
 
 module Spider
   module CLI

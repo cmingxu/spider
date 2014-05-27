@@ -23,6 +23,9 @@ class Worker
   end
 
   def run
+    
+    ap 'ssssssssss'
+    require "web"
     #FangXun::Base.new.craw
     #FangXun::Price.new.craw
     
@@ -30,6 +33,6 @@ class Worker
     #Soufun::Price.new.craw
     
     #ChinaOffice::Base.new.craw
-    ChinaOffice::Price.new.craw
+    #ChinaOffice::Price.new.craw
   end
 end
