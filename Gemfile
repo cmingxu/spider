@@ -9,3 +9,5 @@ gem "mysql2"
 gem "sinatra"
 gem "awesome_print", :require => "lib"
 gem "daemons"
+gem 'sinatra-twitter-bootstrap', :require => 'sinatra/twitter-bootstrap'
+
