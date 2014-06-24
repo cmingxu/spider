@@ -1,6 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    actionpack (4.0.2)
+      activesupport (= 4.0.2)
+      builder (~> 3.1.0)
+      erubis (~> 2.7.0)
+      rack (~> 1.5.2)
+      rack-test (~> 0.6.2)
     activemodel (4.0.2)
       activesupport (= 4.0.2)
       builder (~> 3.1.0)
@@ -22,11 +28,15 @@ GEM
     backports (3.6.0)
     builder (3.1.4)
     daemons (1.1.9)
+    erubis (2.7.0)
     httparty (0.13.0)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.6.9)
     json (1.8.1)
+    kaminari (0.15.1)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     mini_portile (0.5.2)
     minitest (4.7.5)
     multi_json (1.9.0)
@@ -34,6 +44,12 @@ GEM
     mysql2 (0.3.15)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
+    padrino-helpers (0.12.2)
+      i18n (~> 0.6, >= 0.6.7)
+      padrino-support (= 0.12.2)
+      tilt (~> 1.4.1)
+    padrino-support (0.12.2)
+      activesupport (>= 3.1)
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
@@ -65,8 +81,10 @@ DEPENDENCIES
   awesome_print
   daemons
   httparty
+  kaminari
   mysql2
   nokogiri
+  padrino-helpers
   sinatra
   sinatra-contrib
   sinatra-twitter-bootstrap

@@ -18,9 +18,9 @@
           %a.brand{:href => '/'} 乐天信邦
           .nav-collapse
             %ul.nav
-              %li.active
+              %li{:class => active_if_possible("/")}
                 %a{:href => '/'} 抓取
-              %li
+              %li{:class => active_if_possible("/offices")}
                 %a{:href => '/offices'} 房产信息
     .container.body
       = yield

@@ -3,6 +3,8 @@ require "daemons"
 require 'sinatra/twitter-bootstrap'
 require "sinatra/reloader" 
 require "spider_config"
+require "kaminari/sinatra"
+
 
 
 my_app = Sinatra.new do
@@ -13,6 +15,7 @@ my_app = Sinatra.new do
   get('/') { haml :index }
   get('/offices') do
     @sites = SpiderConfig.sites
+    #@offices = Office.page params[:page]
     haml :offices
   end 
 
@@ -34,7 +37,13 @@ my_app = Sinatra.new do
       def js(js_file)
         "<script type='text/javascript'>/javascripts/#{js_file}</script>"
       end
+      
+      def active_if_possible(path)
+        request.path == path ? "active" : ""
+      end
   end
+
+  helpers Kaminari::Helpers::SinatraHelpers
 end
 
 my_app.run!

@@ -1,19 +1,18 @@
 .tabbable.tabs-left
   %ul.nav.nav-tabs
-    - @sites.each do |site|
-      %li.active
-        %a{"data-toggle" => "#tab1"}
+    - @sites.each_with_index do |site, index|
+      %li{:class => index.zero? ? "active" : ""}
+        %a{"data-toggle" => "tab", "href" => site.identity}
           %h4= site.name
 
   .tab-content
-    .tab-pane#tab1
-      %p I'm in Section 1
+    - @sites.each_with_index do |site, index|
+      .tab-pane{"id" => site.identity, :class => index.zero? ? "active" : ""}
+        %table.table.table-condensed
+          %tr
+            %th 名字
+            %th 区域
+            %th 商圈
+            %th 电话
+            %th 地址
 
-    .tab-pane#tab2
-      %p I'm in Section 1
-
-    .tab-pane#tab3
-      %p I'm in Section 1
-
-    .tab-pane#tab4
-      %p I'm in Section 1
