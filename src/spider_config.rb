@@ -1,4 +1,7 @@
 # -*- encoding : utf-8 -*-
+#
+
+require "site"
 module SpiderConfig
   class << self
     def db_spec

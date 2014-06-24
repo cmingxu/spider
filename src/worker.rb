@@ -24,7 +24,6 @@ class Worker
 
   def run
     
-    ap 'ssssssssss'
     require "web"
     #FangXun::Base.new.craw
     #FangXun::Price.new.craw

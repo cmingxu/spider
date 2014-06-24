@@ -1,17 +1,26 @@
 require 'sinatra/base'
 require "daemons"
 require 'sinatra/twitter-bootstrap'
+require "sinatra/reloader" 
+require "spider_config"
 
 
 my_app = Sinatra.new do
   set :root, File.dirname(__FILE__)
   set :public_folder, File.join(root, 'templates/public')
   set :views, Proc.new { File.join(root, "templates") }
-  get('/') { haml :index }
 
-  get('/offices') { haml :offices }
+  get('/') { haml :index }
+  get('/offices') do
+    @sites = SpiderConfig.sites
+    haml :offices
+  end 
 
   register Sinatra::Twitter::Bootstrap::Assets
+
+  configure :development do
+    register Sinatra::Reloader
+  end
 
   helpers do
       def css(css_file)
@@ -27,5 +36,6 @@ my_app = Sinatra.new do
       end
   end
 end
+
 my_app.run!
 

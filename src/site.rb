@@ -2,7 +2,7 @@
 class Site
   attr_accessor :name, :url, :identity
 
-  def initialize(identity, name, url)
+  def initialize(identity, url, name)
     self.name = name
     self.identity = identity
     self.url = url
