@@ -3,8 +3,10 @@ require "daemons"
 require 'sinatra/twitter-bootstrap'
 require "sinatra/reloader" 
 require "spider_config"
-require "kaminari/sinatra"
+require 'sinatra/base'
+require 'sinatra/paginate'
 
+PAGE_SIZE = 20
 
 
 my_app = Sinatra.new do
@@ -15,7 +17,7 @@ my_app = Sinatra.new do
   get('/') { haml :index }
   get('/offices') do
     @sites = SpiderConfig.sites
-    #@offices = Office.page params[:page]
+    @offices = Office.limit(PAGE_SIZE).offset(page * PAGE_SIZE)
     haml :offices
   end 
 
@@ -41,9 +43,12 @@ my_app = Sinatra.new do
       def active_if_possible(path)
         request.path == path ? "active" : ""
       end
+    def page
+      [params[:page].to_i - 1, 0].max
+    end
+      
   end
 
-  helpers Kaminari::Helpers::SinatraHelpers
 end
 
 my_app.run!

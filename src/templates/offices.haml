@@ -16,3 +16,14 @@
             %th 电话
             %th 地址
 
+          - @offices.each_with_index do |office, index|
+            %tr
+              %td= office.name
+              %td= office.name
+              %td= office.name
+              %td= office.name
+              %td= office.name
+
+
+          = paginate @offices
+
