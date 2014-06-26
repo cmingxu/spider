@@ -15,6 +15,9 @@ require "sites/soufun/price"
 require "sites/china_office/base"
 require "sites/china_office/price"
 
+require "sites/focus/base"
+require "sites/focus/price"
+
 class Worker
   def initialize(opt)
     ActiveRecord::Base.logger = SpiderConfig.log
@@ -24,8 +27,9 @@ class Worker
 
   def run
     
-    require "web"
+    #require "web"
     #FangXun::Base.new.craw
+    Focus::Base.new.craw
     #FangXun::Price.new.craw
     
     #Soufun::Base.new.craw
