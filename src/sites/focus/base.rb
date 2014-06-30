@@ -5,16 +5,10 @@ require "nokogiri"
 module Focus
   class Base
     def craw
-      text = Crawler.new.get "http://office.focus.cn/park/search.php"
-
-      doc = Nokogiri::HTML(text)
-      ap doc.css(".area.contA .listBox .right")
-      biggest_page = Integer(doc.css("body > div.area.contA > div.l > div.listBox > div > div.right a").last["href"].scan(/\d+/)[0])
+      biggest_page = 31
 
       (1..biggest_page).each do |page|
-        puts page
-       #office_by_page( "http://office.soufun.com/loupan/house/i3#{page}/")
-        
+       office_by_page( "http://office.focus.cn/park/search.php?page=#{page}")
       end
     end
 
@@ -23,49 +17,43 @@ module Focus
       SpiderConfig.log.debug link
       text = Crawler.new.get link
       doc = Nokogiri::HTML(text)
-      doc.css("div#wrap div.main.mt10 dt p.housetitle a").each do |office|
-        SpiderConfig.log.debug office.css("strong").text
+      doc.css("body div.area.contA div.l div.listBox ul div.t a").each do |office|
+        SpiderConfig.log.debug office.text
+
         office_info_scrap(office)
       end
     end
 
     def office_info_scrap(office_node)
-      SpiderConfig.log.debug office_node['href']
-      text = Crawler.new.get office_node['href']
-      doc = Nokogiri::HTML(text, nil, "gbk")
+      link = "http://office.focus.cn" + office_node['href'].sub(/(\d+)/, 'details_\1')
+      SpiderConfig.log.debug link
+      
+      text = Crawler.new.get(link)
+      ap text
+      doc = Nokogiri::HTML(text, nil)
 
-      o = Office.find_by_name_and_source_site(office_node.text, "soufun") || Office.new
+      o = Office.find_by_name_and_source_site(office_node.text, "focus") || Office.new
       o.name = office_node.text
-      o.link = office_node['href']
-      o.source_site = "soufun"
-      address_info = doc.css("div#wrap div.wrap.mt10 span.gray6")
-      address_info = address_info.css("span").text
-      address_info = address_info.split(" ")
-      o.address = address_info[2]
-      o.area_name = address_info[0][1..-1]
-      o.shangquan = address_info[1].chomp("]")
+      o.link = link
+      o.source_site = "focus"
 
-      o.wuye_name = doc.css("div#wrap div.wrap.mt10 div.xiangqing dl dt").text.split("：")[1]
-      o.wuyefei = doc.css("div#wrap div.wrap.mt10 div.xiangqing dl dd")[2].text.split("：")[1]
-      o.mianji = doc.css("div#wrap div.wrap.mt10 div.xiangqing dl dd")[3].text.split("：")[1]
-      o.zhuangxiu = doc.css("div#wrap div.lpblbox1 dl.xiangqing dd")[6].text.split("：")[1]
-      o.kaifashang = doc.css("div#wrap div.lpblbox1 dl.xiangqing dd")[10].text.split("：")[1]
+      address_info = doc.css("div.area.cutC div.l div.blockLA div.bg div.boxA div.txt")
+      o.address   = address_info.css('li')[9].text if address_info.css('li')[9]
+      o.area_name = address_info.css('li')[3].text if address_info.css('li')[3]
+      o.shangquan = address_info.css('li')[7].text if address_info.css('li')[7]
+
+      if wuye_block =  doc.css("div.area.cutC div.l div.blockLA div.bg div.boxA div.txt")[4]
+        o.wuye_name  = wuye_block.css("li")[1].text
+      end
 
       o.detail =  []
-      doc.css("div#wrap div.wrap.mt10 div.xiangqing dl dd").each do |node|
-        str = node.text
-        hash = {}  
-        hash[str.split(SpiderConfig.sep)[0]] = str.split(SpiderConfig.sep)[1]
-        o.detail << hash
+      hash = {}
+      doc.css("div.area.cutC div.l div.blockLA div.bg div.boxA div.txt").each do |node|
+        node.css("li").each_slice(2) do |es|
+          hash[es[0].text] = es[1].text
+        end
       end
-
-      doc.css("div#wrap div.lpblbox1 dl.xiangqing dd").each do |node|
-        str = node.text
-        hash = {}  
-        hash[str.split(SpiderConfig.sep)[0]] = str.split(SpiderConfig.sep)[1]
-        o.detail << hash
-      end
-
+      o.detail << hash
       o.save
     end
   end

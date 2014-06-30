@@ -29,7 +29,8 @@ class Worker
     
     #require "web"
     #FangXun::Base.new.craw
-    Focus::Base.new.craw
+    #Focus::Base.new.craw
+    Focus::Price.new.craw
     #FangXun::Price.new.craw
     
     #Soufun::Base.new.craw
